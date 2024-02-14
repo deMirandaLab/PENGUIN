@@ -1,7 +1,7 @@
 from apeer_ometiff_library import io
-import tensorflow as tf
+# import tensorflow as tf
 import numpy as np
-
+from src.file_specs import FileSpecifics
 
 # class ImageParser():
 
@@ -37,7 +37,7 @@ def parse_image(img_path: str) -> np.array:
         return None
 
 from tifffile import tifffile
-def parse_image2(img_path):
+def parse_image_pages(img_path):
     """
     For tiff files with ages and not fullstack
     :param img_path:
@@ -48,10 +48,32 @@ def parse_image2(img_path):
         for page in tif.pages:
             image = page.asarray()
             im.append(image)
-    im = np.asarray(im)
+    im = np.array(im)
     img = np.moveaxis(im, 0, -1)
     return img
 
+def parse_image_pages_namesCH(img_path):
+    """
+    For tiff files with ages and not fullstack
+    :param img_path:
+    :return:
+    """
+    im = []
+    ch_names = []
+    with tifffile.TiffFile(img_path) as tif:
+        for page in tif.pages:
+            image = page.asarray()
+            im.append(image)
+            if 'PageName' in page.tags:
+                ch_names.append(page.tags['PageName'].value)
+            elif 'ImageDescription' in page.tags:
+                ch_names.append(page.tags['ImageDescription'].value)
+            else:
+                pass
+
+    im = np.array(im)
+    img = np.moveaxis(im, 0, -1)
+    return img, ch_names
 
 def parse_image_with_meta(img_path: str) -> dict:
     """Load an image and its annotation (mask) and returning
@@ -69,13 +91,26 @@ def parse_image_with_meta(img_path: str) -> dict:
         Dictionary mapping an image and its annotation.
     """
     img_apeer, omexml = io.read_ometiff(img_path)
-
+    ch_names = []
     if img_path.__contains__('MB'):#  (1, 50, 1, 1, 494, 464) instead of   (1, 1, 52, 586, 617)
         img = img_apeer[0, :, 0, 0, :, :]
     else:
         img = img_apeer[0, 0, :, :, :]
     img = np.moveaxis(img, 0, -1)  # 'image': img,
     return {'img_meta': omexml, 'filename': img_path, 'shape_img': img.shape}
+
+
+def parse_image_with_ch_name(img_path: str):
+    """
+    """
+    img_apeer, omexml = io.read_ometiff(img_path)
+    if img_path.__contains__('MB'):#  (1, 50, 1, 1, 494, 464) instead of   (1, 1, 52, 586, 617)
+        img = img_apeer[0, :, 0, 0, :, :]
+    else:
+        img = img_apeer[0, 0, :, :, :]
+    img = np.moveaxis(img, 0, -1)  # 'image': img,
+
+    return img, omexml
 
 
 def simple_reduce_channels(img: np.array, channeltokeep: list) -> np.array:
@@ -261,14 +296,14 @@ def mibi_noise(img: np.array) -> np.array:
     return result
 
 
-# check better ways to resize???
-def resize_dataset(image, INP_SIZE):
-    # image = tf.image.resize(image, (INP_SIZE[0], INP_SIZE[1]))
-
-    image = tf.image.resize_with_pad(image, INP_SIZE[0], INP_SIZE[1])
-    # https://www.tensorflow.org/api_docs/python/tf/image/resize
-
-    return image
+# # check better ways to resize???
+# def resize_dataset(image, INP_SIZE):
+#     # image = tf.image.resize(image, (INP_SIZE[0], INP_SIZE[1]))
+#
+#     image = tf.image.resize_with_pad(image, INP_SIZE[0], INP_SIZE[1])
+#     # https://www.tensorflow.org/api_docs/python/tf/image/resize
+#
+#     return image
 
 
 def average_channel_per_pixel(img: np.array) -> np.array:

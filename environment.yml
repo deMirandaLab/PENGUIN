@@ -1,0 +1,48 @@
+name: prepIMC2
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - binutils_impl_linux-64=2.40=hf600244_0
+  - blas=1.0=mkl
+  - bzip2=1.0.8=h7b6447c_0
+  - ca-certificates=2022.12.7=ha878542_0
+  - certifi=2022.12.7=pyhd8ed1ab_0
+  - cython=0.29.32=py310h6a678d5_0
+  - gcc=12.2.0=h26027b1_11
+  - gcc_impl_linux-64=12.2.0=hcc96c02_19
+  - intel-openmp=2021.4.0=h06a4308_3561
+  - kernel-headers_linux-64=2.6.32=he073ed8_15
+  - ld_impl_linux-64=2.40=h41732ed_0
+  - libffi=3.4.2=h6a678d5_6
+  - libgcc-devel_linux-64=12.2.0=h3b97bd3_19
+  - libgcc-ng=12.2.0=h65d4601_19
+  - libgomp=12.2.0=h65d4601_19
+  - libsanitizer=12.2.0=h46fd767_19
+  - libstdcxx-ng=12.2.0=h46fd767_19
+  - libuuid=1.41.5=h5eee18b_0
+  - mkl=2021.4.0=h06a4308_640
+  - mkl-service=2.4.0=py310h7f8727e_0
+  - mkl_fft=1.3.1=py310hd6ae3a3_0
+  - mkl_random=1.2.2=py310h00e6091_0
+  - ncurses=6.4=h6a678d5_0
+  - numpy=1.23.5=py310hd5efca6_0
+  - numpy-base=1.23.5=py310h8e6c178_0
+  - openssl=1.1.1t=h0b41bf4_0
+  - pip=22.3.1=py310h06a4308_0
+  - python=3.10.9=h7a1cb2a_0
+  - readline=8.2=h5eee18b_0
+  - setuptools=65.6.3=py310h06a4308_0
+  - six=1.16.0=pyhd3eb1b0_1
+  - sqlite=3.40.1=h5082296_0
+  - sysroot_linux-64=2.12=he073ed8_15
+  - tk=8.6.12=h1ccaba5_0
+  - tzdata=2022g=h04d1e81_0
+  - wheel=0.37.1=pyhd3eb1b0_0
+  - xz=5.2.10=h5eee18b_1
+  - zlib=1.2.13=h5eee18b_0
+  - pip:
+      - tifffile==2020.6.3
+prefix: /home/martinha/miniconda3/envs/prepIMC2

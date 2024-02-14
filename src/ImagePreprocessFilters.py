@@ -3,7 +3,7 @@ import copy
 import matplotlib.pyplot as plt
 import numpy as np
 
-import ImageParser as IP
+# import ImageParser as IP
 from scipy import ndimage as nd
 import cv2
 
@@ -61,13 +61,46 @@ def out_ratio2(img, th=0.1):
     new_img = np.where(img >= th, img, 0)
     return new_img
 
+import skimage
+def th_otsu(img):
+    th = skimage.filters.threshold_otsu(img)
+    new_img = np.where(img > th, img, 0)
+    return new_img
 
+def th_isodata(img):
+    th = skimage.filters.threshold_isodata(img)
+    new_img = np.where(img > th, img, 0)
+    return new_img
+
+def th_li(img):
+    th = skimage.filters.threshold_li(img)
+    new_img = np.where(img > th, img, 0)
+    return new_img
+
+def th_yen(img):
+    th = skimage.filters.threshold_yen(img)
+    new_img = np.where(img > th, img, 0)
+    return new_img
+
+def th_triangle(img):
+    th = skimage.filters.threshold_triangle(img)
+    new_img = np.where(img > th, img, 0)
+    return new_img
+
+def th_mean(img):
+    th = skimage.filters.threshold_mean(img)
+    new_img = np.where(img > th, img, 0)
+    return new_img
+
+def th_local(img, block_size=3, method='gaussian'):
+    th = skimage.filters.threshold_local(img, block_size=block_size, method=method)
+    new_img = np.where(img > th, img, 0)
+    return new_img
 ###########################################################################
 ##### Filters
 
 def percentile_filter(img: np.array, window_size:int = 3, percentile:int=50, transf_bool = True, out_ratio = False )-> np.array:
     '''
-
     :param img:
     :param window_size:
     :param percentile:
@@ -166,6 +199,30 @@ def percentile_filter_changedpercentiles(img: np.array, window_size:int = 3, per
     #       'percentage of pixels changed: {}'.format(pixel_changed, total_pixel,percentage_changed))
 
     return percentile_blur
+
+
+def out_ratio_changedth(img: np.array, th:list=[])-> np.array:
+    '''
+
+    :param img:
+    :param window_size:
+    :param percentiles:
+    :param transf_bool:
+    :return:
+    Percentile different from channel
+
+    '''
+
+    th_img = np.empty(img.shape)
+    for ch in range(img.shape[2]):
+        img_ch = img[:,:,ch]
+        new_img = np.where(img_ch >= th, img, 0)
+        th_img[:,:,ch] = new_img
+    return th_img
+
+
+
+
 
 
 def x_shaped_kernel(size):
@@ -734,3 +791,23 @@ def save_images(img: np.array, name:str, ch_last:bool = True)-> np.array:
     tifffile.imwrite(name, img_save,photometric="minisblack")
     return img
 
+def save_images_ch_names(img: np.array, name:str, ch_last:bool = True, channel_names:list=None)-> np.array:
+    import tifffile
+    img_save = np.float32(img)
+    if ch_last == True: # channel is the last axis
+        img_save = np.moveaxis(img_save, -1, 0)
+
+    tifffile.imwrite(name, img_save,photometric="minisblack", metadata={'Channel': {'Name': channel_names}})
+    return img
+
+def save_img_ch_names_pages(img: np.array, name:str, ch_last:bool = True, channel_names:list=None)-> np.array:
+    import tifffile
+    img_save = np.float32(img)
+    if ch_last == True: # channel is the last axis
+        img_save = np.moveaxis(img_save, -1, 0) # put the channel on first axis
+
+    with tifffile.TiffWriter(name, bigtiff=True) as tiff:
+        for i, page in enumerate(img_save):
+            tiff.save(page,description=channel_names[i],
+                      extratags = [(285,2,None,channel_names[i], False)]) #, metadata=tags #  description=channel_names[i],
+    return img_save
