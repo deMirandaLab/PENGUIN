@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notebook usage &mdash; PENGUIN 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Script usage" href="script_usage.html" />
+    <link rel="prev" title="Set up" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PENGUIN
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Set up</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Notebook usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="script_usage.html">Script usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions_usage.html">Functions usage</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PENGUIN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Notebook usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/notebook_usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="notebook-usage">
+<h1>Notebook usage<a class="headerlink" href="#notebook-usage" title="Permalink to this heading"></a></h1>
+<p>There are 2 Notebooks available.</p>
+<p>Use check_th_all_ch_per_image if each FOV is a stack of channels.</p>
+<p>Use check_th_one_ch_per_image if each FOV is a directory with multiple tiffs inside (one per each channel)</p>
+<p>Open the notebook and click Kernel -&gt; Restart and Run all</p>
+<p>For all channels in a stack it should look like this:</p>
+<img alt="layout of the noteboook and folder structure for stacks of channels" src="D:\PycharmProjects\phd\Preprocess_IMC\figs\all_ch_image.png" />
+<p>Change the path to the location of your data and click ‘Change Path’.</p>
+<p>You can now change the channels to visualize and select different percentiles and thresholds.</p>
+<p>Compare images tab gives you the comparison between raw and the clean image with the defined settings</p>
+<p>Compare Zoom plots the images using Plotly library that allows for zooming some areas.</p>
+<p>You can change the number of images that are displayed and specified a image name.</p>
+<p>In the case of stacks of channels, your channel names should be in the page tags. Otherwise, the channel names will be
+set as index numbers.</p>
+<p>In the case of directory with multiple files, the channel names should be in the file names.</p>
+<img alt="layout of the noteboook with image comparison" src="D:\PycharmProjects\phd\Preprocess_IMC\figs\all_ch_image_2.png" />
+<p>Once you have the values for percentile and thresholds defined you can save your images by just clicking
+the save button.</p>
+<p>In case of a file per channel, you can save all the images of the same
+channel at once.</p>
+<p>In case of stacks with multiple channels per FOV, you need to define
+the values per each channel in the pop up table and click save (see below).</p>
+<img alt="saving table" src="D:\PycharmProjects\phd\Preprocess_IMC\figs\save_table.png" />
+<p>Saving images will mimick your structure and filenames (and pagetags) in the
+saving directory.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Set up" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="script_usage.html" class="btn btn-neutral float-right" title="Script usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, A.M.Sequeira.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

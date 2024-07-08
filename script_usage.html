@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Script usage &mdash; PENGUIN 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Functions usage" href="functions_usage.html" />
+    <link rel="prev" title="Notebook usage" href="notebook_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            PENGUIN
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Set up</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebook_usage.html">Notebook usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Script usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions_usage.html">Functions usage</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PENGUIN</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Script usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/script_usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="script-usage">
+<h1>Script usage<a class="headerlink" href="#script-usage" title="Permalink to this heading"></a></h1>
+<p>If you want to process your images directly without notebooks, there are two example pipelines to apply to images
+with stacks of channels, or with each channel in a different file.</p>
+<p>In this case, you will not be able to interactively check which thresholdings and percentiles best apply to each channel.</p>
+<dl class="simple">
+<dt>The scripts apply the pipeline:</dt><dd><ul class="simple">
+<li><p>saturation of outliers</p></li>
+<li><p>channel normalization</p></li>
+<li><p>thresholding</p></li>
+<li><p>percentile filtering</p></li>
+<li><p>save</p></li>
+</ul>
+</dd>
+</dl>
+<p>The following code is only a snapshot, please check the full script.</p>
+<p>For stacks of channels, and with all the parameters defined, the general idea would be as follow:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">images_original = list(map(IP.parse_image_pages, files))</span>
+
+<span class="go">imgs_out = map(lambda p: IPrep.remove_outliers(p, up_limit, down_limit), images_original)</span>
+<span class="go">imgs_norm = map(IPrep.normalize_channel_cv2_minmax, imgs_out)</span>
+<span class="go">filtered_images = map(lambda i: preprocess_image(i, thresholds, percentiles), imgs_norm)</span>
+<span class="go">imgs_filtered = list(filtered_images)</span>
+
+<span class="gp"># </span>save<span class="w"> </span>with<span class="w"> </span>channel<span class="w"> </span>names
+<span class="go">images_final = map(</span>
+<span class="go">    lambda p, f: IPrep.save_img_ch_names_pages(p, f, ch_last=True, channel_names=channel_names),</span>
+<span class="go">    imgs_filtered, names_save)</span>
+</pre></div>
+</div>
+<p>preprocess_image is a function defined in the example and applies thresholding and percentile
+per channel.</p>
+<p>For channels defined by a single file and organized in patient folders, and with all the parameters defined,
+the general idea would be as follow:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">for channel, th, perc in zip(channel_names, thresholds, percentiles):</span>
+<span class="go">    file_paths = [file for file in files if str(channel + &#39;.ome.tiff&#39;) in str(file)]</span>
+<span class="go">    images_original = list(map(IP.parse_image, file_paths))</span>
+<span class="go">    imgs_out = map(lambda p: IPrep.remove_outliers(p, up_limit, down_limit), images_original)</span>
+<span class="go">    imgs_norm = map(IPrep.normalize_channel_cv2_minmax, imgs_out)</span>
+<span class="go">    if isinstance(threshold, float):</span>
+<span class="go">        imgs_filtered = list(map(lambda p: IPrep.out_ratio2(p, th=threshold), imgs_norm))</span>
+<span class="go">    if percentile is not None:</span>
+<span class="go">        imgs_filtered = map(</span>
+<span class="go">            lambda p: IPrep.percentile_filter(p, window_size=3, percentile=percentile, transf_bool=True),</span>
+<span class="go">            imgs_filtered)</span>
+
+<span class="go">    map(lambda p, f: IPrep.save_images(p, f, ch_last=True), imgs_filtered, names_save)</span>
+</pre></div>
+</div>
+<p>Please check the scripts for additional parameters. Feel free to adjust all the code.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="notebook_usage.html" class="btn btn-neutral float-left" title="Notebook usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="functions_usage.html" class="btn btn-neutral float-right" title="Functions usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, A.M.Sequeira.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
