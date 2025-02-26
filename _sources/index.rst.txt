@@ -14,7 +14,7 @@ This repository contains the documentation files for running PENGUIN.
 
 The general view of PENGUIN:
 
-.. image:: ../../figs/main_figure.png
+.. image:: D:\\PycharmProjects\\phd\\Preprocess_IMC\\figs\\main_figure.png
 
 
 .. toctree::

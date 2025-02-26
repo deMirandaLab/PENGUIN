@@ -11,7 +11,7 @@ Open the notebook and click Kernel -> Restart and Run all
 
 For all channels in a stack it should look like this:
 
-.. image:: ../../figs/all_ch_image.png
+.. image:: D:\\PycharmProjects\\phd\\Preprocess_IMC\\figs\\all_ch_image.png
     :alt: layout of the noteboook and folder structure for stacks of channels
 
 
@@ -31,7 +31,7 @@ set as index numbers.
 In the case of directory with multiple files, the channel names should be in the file names.
 
 
-.. image:: ../../figs/all_ch_image_2.png
+.. image:: D:\\PycharmProjects\\phd\\Preprocess_IMC\\figs\\all_ch_image_2.png
     :alt: layout of the noteboook with image comparison
 
 Once you have the values for percentile and thresholds defined you can save your images by just clicking
@@ -43,7 +43,7 @@ channel at once.
 In case of stacks with multiple channels per FOV, you need to define
 the values per each channel in the pop up table and click save (see below).
 
-.. image:: ../../figs/save_table.png
+.. image:: D:\\PycharmProjects\\phd\\Preprocess_IMC\\figs\\save_table.png
     :alt: saving table
 
 Saving images will mimick your structure and filenames (and pagetags) in the
