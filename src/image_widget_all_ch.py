@@ -236,7 +236,7 @@ class SaveWidget:
         # Define widgets
         self.btn_saving_options = widgets.Button(description='Saving Options')
         self.btn_saving_options.on_click(self._update_output)
-        self.btn_saving_options.on_click(self._saving_options_eventhandler)
+        # self.btn_saving_options.on_click(self._saving_options_eventhandler)
         self.PATH = widgets.Text(value='path/to/data', description='Original Path:', disabled=False)
         # self.button = widgets.Button(description="Change Path")
         # self.button.on_click(self._update_output)
@@ -311,43 +311,58 @@ class SaveWidget:
         if not os.path.exists(self.txtbox.value):
             os.makedirs(self.txtbox.value)
 
-        # does all the files
+
+        # Process images
         images_original, imgs_norm = JN.preprocess_images_pages(self.files)
         imgs_channel = [images_original[i] for i in range(len(images_original))]
         norm_imgs_channel = [imgs_norm[i] for i in range(len(imgs_norm))]
 
-        # grab the th_list and the percentile_list
+        # Grab the th_list and the percentile_list
         download_table = self.edit_table
         th_list = list(download_table.value['threshold'])
         percentile_list = list(download_table.value['percentile'])
 
+        # Save parameters to CSV
         csv_path = os.path.join(str(self.path_for_results), 'denoiseParameters.csv')
-        #     download_table.download(csv_path) # download in the wrong folder
-
         df = pd.DataFrame(download_table.value)
         df.to_csv(csv_path, index=True)
 
+        # Filter images
         imgs_filtered = map(lambda i: JN.calculus_multitiff_lists(i, th_list, percentile_list), norm_imgs_channel)
         imgs_filtered = list(imgs_filtered)
 
         if binary_masks:
             imgs_filtered = [np.where(a > 0, 1, 0) for a in imgs_filtered]
 
-        # get the names of images
-        names_save = [str(self.path_for_results + sub) for sub in self.images_names]
+        # Save images individually in their respective folders
+        for i, file_name in enumerate(self.files):
+            # Create a folder for each file
+            file_base_name = os.path.splitext(os.path.basename(file_name))[0]
+            folder_path = os.path.join(self.txtbox.value, file_base_name)
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
 
-        if isinstance(self.channel_names[0], str):
-            images_final = map(
-                lambda p, f: IPrep.save_img_ch_names_pages(p, f, ch_last=True, channel_names=self.channel_names),
-                imgs_filtered, names_save)
+            # Get the image to save
+            img_to_save = imgs_filtered[i]  # Assuming one image per file
 
+            # Define the path to save the image
+            save_path = os.path.join(folder_path, f"{file_base_name}.tiff")
+
+            # Save the image
+            if isinstance(self.channel_names[0], str):
+                IPrep.save_img_ch_names_pages(img_to_save, save_path, ch_last=True, channel_names=self.channel_names)
+            else:
+                IPrep.save_images(img_to_save, save_path, ch_last=True)
+            
+            # Create 'tiles.txt' file with a '0' inside
+            txt_file_path = os.path.join(folder_path, 'Tiles.txt')
+            with open(txt_file_path, 'w') as f:
+                f.write('0')
+
+        if self.output_widget:
+            self.output_widget.append_stdout(f'Images saved in {self.txtbox.value}\n')
         else:
-            # will not save channel names
-            images_final = map(lambda p, f: IPrep.save_images(p, f, ch_last=True), imgs_filtered, names_save)
-
-        it = list(images_final)
-        print(f'Images saved at {self.path_for_results}')
-
+            print(f'Images saved in {self.txtbox.value}')
 
     def _update_output(self, button):
         with self.output_widget:
@@ -360,6 +375,8 @@ class SaveWidget:
                         print("Path provided:", directory_path)
                         self.folder_path = directory_path
                         self._load_files_from_folder(directory_path)
+                        self._saving_options_eventhandler(button)  # Call the method here
+
                     else:
                         print("Error: The specified directory is empty.")
                 else:
