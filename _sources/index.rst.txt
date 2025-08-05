@@ -29,6 +29,10 @@ The general view of PENGUIN:
 Credits
 ==========
 If you find this repository useful in your research or for educational purposes please refer to:
+Sequeira, A. M., Ijsselsteijn, M. E., Rocha, M., & de Miranda, N. F. (2024). PENGUIN: a rapid and efficient image
+preprocessing tool for multiplexed spatial proteomics. Computational and Structural Biotechnology Journal, 23, 3920-3928.
+doi:https://doi.org/10.1016/j.csbj.2024.10.048
+
 
 License
 ==========
