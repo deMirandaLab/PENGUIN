@@ -1,9 +1,14 @@
 [//]: # ([![License]&#40;https://img.shields.io/badge/license-MIT-blue.svg&#41;]&#40;LICENSE&#41;)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Repository Size](https://img.shields.io/github/repo-size/marta-seq/PENGUIN.svg)](https://github.com/marta-seq/PENGUIN)
+[![Repository Size](https://img.shields.io/github/repo-size/deMirandaLab/PENGUIN.svg)](https://github.com/deMirandaLab/PENGUIN)
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![Suggestions Welcome](https://img.shields.io/badge/Suggestions-Welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Release](https://img.shields.io/github/v/release/marta-seq/PENGUIN.svg)](https://github.com/marta-seq/PENGUIN/releases/)
+[![Release](https://img.shields.io/github/v/release/deMirandaLab/PENGUIN.svg)](https://github.com/deMirandaLab/PENGUIN/releases/)
+[![CI](https://github.com/deMirandaLab/PENGUIN/actions/workflows/tests.yml/badge.svg)](https://github.com/deMirandaLab/PENGUIN/actions/workflows/tests.yml)
+[![Documentation Status](https://readthedocs.org/projects/yourproject/badge/?version=latest)](https://demirandalab-penguin.readthedocs.io/en/latest/?badge=latest)
+[![Docs](https://img.shields.io/badge/docs-online-brightgreen)](https://deMirandaLab.github.io/REPO/)
+
+
 # PENGUIN
 
 *PENGUIN* - Percentile Normalization GUI Image deNoising is a 
@@ -146,3 +151,4 @@ Released under the GNU Public License (version 3.0).
 [//]: # (.. |RTD version| image:: https://readthedocs.org/projects/propythia/badge/?version=latest&style=plastic)
 
 [//]: # (   :target: https://propythia.readthedocs.io/)
+
