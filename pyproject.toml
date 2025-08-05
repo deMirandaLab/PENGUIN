@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "penguin"
+version = "0.1.0"
+description = "Preprocessing package for IMC data"
+authors = [
+    { name = "Your Name", email = "you@example.com" }
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+  "matplotlib",
+  "pandas",
+  "panel",
+  "opencv-python",
+  "scikit-image",
+  "ipywidgets",
+  "jupyter",
+  "ipykernel",
+  "plotly"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
