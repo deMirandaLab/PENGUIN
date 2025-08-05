@@ -5,8 +5,7 @@
 [![Suggestions Welcome](https://img.shields.io/badge/Suggestions-Welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Release](https://img.shields.io/github/v/release/deMirandaLab/PENGUIN.svg)](https://github.com/deMirandaLab/PENGUIN/releases/)
 [![CI](https://github.com/deMirandaLab/PENGUIN/actions/workflows/tests.yml/badge.svg)](https://github.com/deMirandaLab/PENGUIN/actions/workflows/tests.yml)
-[![Documentation Status](https://readthedocs.org/projects/yourproject/badge/?version=latest)](https://demirandalab-penguin.readthedocs.io/en/latest/?badge=latest)
-[![Docs](https://img.shields.io/badge/docs-online-brightgreen)](https://deMirandaLab.github.io/REPO/)
+[![Documentation Status](https://readthedocs.org/projects/demirandalab-penguin/badge/?version=latest)](https://demirandalab-penguin.readthedocs.io/en/latest/?badge=latest)
 
 
 # PENGUIN
