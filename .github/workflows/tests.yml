@@ -1,0 +1,62 @@
+name: CI — tests
+
+on:
+  push:
+    branches:
+      - '**'            # run on pushes to any branch
+  pull_request:
+    branches:
+      - main           # run on PRs targeting main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [3.8]   # add other versions if wanted, e.g. 3.9, 3.10
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # if you have dev requirements for testing, install them too
+          if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+          # install package in editable mode so tests import src/ correctly
+          pip install -e .
+
+      - name: Run pytest (produce junit xml)
+        run: |
+          mkdir -p test-results
+          pytest -q --junitxml=test-results/junit.xml || true
+        continue-on-error: false
+
+      - name: Upload pytest junit xml
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-xml
+          path: test-results/junit.xml
+
+      - name: Upload test logs (stdout/stderr)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-logs
+          path: |
+            pytest.log
+            test-results/junit.xml
